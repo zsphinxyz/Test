@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../style.css">
+  <title>Test</title>
+</head>
+<body>
+  
+  <h1>Hello world - <span id="state"></span></h1>
+  <select title="Frequency Type" name="typeSelector" id="typeSelector" onchange="typeSelect()">
+    <option value="sine">sine</option>
+    <option value="sawtooth">sawtooth</option>
+    <option value="square">square</option>
+    <option value="triangle">triangle</option>
+  </select>
+  <div class="btns"></div>
+  
+  <button onclick="audio.stop()">Pause</button>
+  <button onclick="audio.resume()">Resume</button>
+  <br />
+
+  <button onclick="playAll()">Play All</button>
+  <br />
+
+  <button onclick="audio.playLaser()">Laser</button>
+  <button onclick="audio.playBDSong()">Play BD song</button>
+  <button onclick="audio.playPi()">play PI</button>
+  <br />
+
+  <script src="audioPlayer.js"></script>
+  <script defer src="index.js"></script>
+</body>
+</html>

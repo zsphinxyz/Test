@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peer 1</title>
+  <style>
+    body {
+      background-color: #252525;
+      color: #efefef
+    }
+  </style>
+</head>
+<body>
+  <h1>Peer 1</h1>
+
+  <button id="createChannel">create channel</button>
+
+  <p>Status: <span id="status"></span></p>
+  <p id="ice"></p>
+
+  <input type="text" id="ans" placeholder="paste answer">
+  <button id="ansBtn">Answer</button>
+
+  <div id="msg">
+
+  </div>
+
+  <script>
+    let lc = null;
+    let dc = null;
+    let msg = null;
+    const ice = document.getElementById('ice');
+    const status = document.getElementById('status');
+    const ansBtn = document.getElementById("ansBtn")
+    const ans = document.getElementById("ans")
+
+
+    document.getElementById('createChannel').onclick = () => {
+      lc = new RTCPeerConnection()
+      dc = lc.createDataChannel("channel")
+
+      status.innerHTML = "waiting to connect..."
+
+      // console.log(dc)
+
+      dc.onopen = () => status.innerHTML = "Connection Open!";
+      dc.onmessage = (e) => msg.innerHTML = msg += e.data;
+      dc.onclose = () => status.innerHTML = "Connection Closed!";
+
+      lc.onicecandidate = () => lc.localDescription
+      lc.createOffer().then( o => {
+        lc.setLocalDescription(o)
+        ice.innerHTML = JSON.stringify(o)
+      })
+    }
+    
+    ansBtn.onclick = () => {
+      let answer = ans.value;
+      status.innerHTML = "send back data"
+      // console.log(answer)
+      lc.setRemoteDescription(JSON.parse(answer)).then(() => console.log("done"))
+    }
+    
+  </script>
+  
+</body>
+</html>

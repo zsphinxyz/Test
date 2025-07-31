@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+ <h1>test</h1>
+
+  <script>
+
+    const con = new RTCPeerConnection();
+    const dataCon = con.createDataChannel('sendChannel');
+
+    dataCon.onmessage = e => console.log(e.data)
+    dataCon.onopen = () => alert("connection has been established!");
+    dataCon.onclose = () => alert("connection closed!")
+    con.onicecandidate = e => console.log('ICE CAND: ',con.localDescription)
+    con.createOffer().then( (_offer) => {
+      con.setLocalDescription(_offer)
+      // offer = con.setLocalDescription(offer)
+    })
+    
+
+
+    /*********** PEER 2 **********/
+
+    function runCon2(offer) {
+      const con2 = new RTCPeerConnection();
+  
+      con2.onicecandidate = e => console.log("ICE CAND2: ", con2.localDescription)
+  
+      con2.ondatachannel = e => {
+        const dataCon = e.channel;
+        console.log(dataCon)
+        con2.dataConnection = dataCon;
+        con2.dataConnection.onmessage = e => console.log(e.data)
+        con2.dataConnection.onopen = () => alert("connection has benn established !!!!!");
+        con2.dataConnection.onclose = () => alert("connection closed !!!!!");
+      }
+  
+      // const offer = JSON.stringify({
+      //   sdp: "v=0\r\no=- 1761841064517421083 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=candidate:2867325446 1 udp 2113937151 6335b098-db59-49d1-9cb3-eef2585ffd5f.local 59484 typ host generation 0 network-cost 999\r\na=ice-ufrag:++WI\r\na=ice-pwd:ukKM4b6nYnVSwzBBkPaJo+mT\r\na=ice-options:trickle\r\na=fingerprint:sha-256 90:ED:A7:8B:F9:19:CB:74:E4:9A:1E:FE:4E:95:3D:60:AD:6C:0F:7F:44:15:55:02:D6:B8:BD:D3:21:45:E9:BD\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n",
+      //   type: "offer"
+      // })
+  
+      // offer = JSON.stringify(offer)
+   
+      function send(msg)  {
+        con2.setRemoteDescription(JSON.parse(offer));
+        con2.createAnswer()
+        .then( ans => con2.setLocalDescription(ans))
+        .then( console.log(con2.localDescription) )
+        con2.dataConnection.send(msg)
+      }
+
+    }
+
+
+
+    
+    
+  </script>
+</body>
+</html>

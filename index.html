@@ -3,33 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TEST</title>
   <link rel="stylesheet" href="style.css">
-  <title>Test</title>
+  <style>
+    body {
+      background-color: #252525;
+      color: #efefef;
+    }
+    ul {
+      padding: 20px 50px;
+    }
+    ul li a {
+      color: white;
+      font-size: 18px;
+      padding-bottom: 5px;
+      display: inline-block;
+    }
+    ul li a:hover {
+      text-decoration: double;
+    }
+    ul li a:visited {
+      color: slategray;
+    }
+  </style>
 </head>
 <body>
   
-  <h1>Hello world - <span id="state"></span></h1>
-  <select title="Frequency Type" name="typeSelector" id="typeSelector" onchange="typeSelect()">
-    <option value="sine">sine</option>
-    <option value="sawtooth">sawtooth</option>
-    <option value="square">square</option>
-    <option value="triangle">triangle</option>
-  </select>
-  <div class="btns"></div>
-  
-  <button onclick="audio.stop()">Pause</button>
-  <button onclick="audio.resume()">Resume</button>
-  <br />
+  <div class="">
+    <ul class="">
+      <li><a href="/audioContext/">AudioContext</a></li>
+      <!-- <li><a href="/chat/peer1.html">Chat</a></li> -->
+      <li><a href="/balls">balls</a></li>
+      <li><a href="/graph/">graph</a></li>
+    </ul>
+  </div>
 
-  <button onclick="playAll()">Play All</button>
-  <br />
-
-  <button onclick="audio.playLaser()">Laser</button>
-  <button onclick="audio.playBDSong()">Play BD song</button>
-  <button onclick="audio.playPi()">play PI</button>
-  <br />
-
-  <script src="audioPlayer.js"></script>
-  <script defer src="index.js"></script>
 </body>
 </html>

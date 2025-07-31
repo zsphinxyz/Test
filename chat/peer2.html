@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peer2</title>
+  <style>
+    body{
+      background-color: #253325;
+      color: #efefef;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="">Peer-2</h1>
+  <p>Status: <span id="status"></span></p>
+  <input id="offer" type="text" placeholder="Paste SDP">
+  <button id="ans">Answer</button>
+
+  <p id="ice"></p>
+
+  <div id="msg">
+
+  </div>
+  
+
+  <script>
+
+    let offer = null;
+    let rc = null;
+    
+    const offerBox = document.getElementById("offer");
+    const ansBtn = document.getElementById("ans");
+    const status = document.getElementById("status");
+    const msg = document.getElementById("msg");
+    const ice = document.getElementById("ice");
+
+    ansBtn.onclick = () => {
+      offer = offerBox.value
+      console.log(offer)
+      rc = new RTCPeerConnection();
+      rc.ondatachannel = (e) => {
+        e.channel.onopen = () => status.innerHTML = "Connection Open!"
+        e.channel.onmessage = (e) => msg.innerHTML += e.data
+        e.channel.onclose = () => status.innerHTML = "Connection Close!"
+        rc.channel = e.channel
+      }
+      rc.onicecandidate = () => rc.localDescription
+      
+      rc.setRemoteDescription(JSON.parse(offer))
+      rc.createAnswer().then((data) => {
+        rc.setLocalDescription(data);
+        console.log(data)
+        ice.innerHTML = JSON.stringify(data)
+      })
+    }
+    
+  </script>
+</body>
+</html>
